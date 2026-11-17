@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AURASKIN — Chẩn đoán &amp; Tư vấn Điều trị Mụn</title>
+
+  <!-- Clean Editorial Typography: Be Vietnam Pro & Cormorant Garamond -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Cormorant+Garamond:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Toast Notification Container (Top-Right) -->
+  <div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- =========================================================
+       AUTHENTICATION VIEW: Editorial Login & Register Gate
+       ========================================================= -->
+  <section class="auth-view" id="authView" aria-label="Đăng nhập hệ thống AURASKIN">
+    <div class="auth-card">
+      <div class="auth-editorial">
+        <div class="auth-brand">
+          <h1 class="brand-wordmark">AURASKIN</h1>
+          <div class="auth-logo-box">
+            <img
+              src="logo.png"
+              alt="Logo Aura Skin"
+              class="auth-brand-logo"
+              width="707"
+              height="500"
+              loading="eager"
+            >
+          </div>
+          <p class="brand-subtitle">CHẨN ĐOÁN &amp; TƯ VẤN ĐIỀU TRỊ MỤN</p>
+          <p class="brand-tagline">Thấu hiểu làn da theo cách dịu dàng nhất</p>
+        </div>
+      </div>
+
+      <div class="auth-form-panel">
+        <div class="auth-mode-tabs" role="tablist" aria-label="Chuyển đổi đăng nhập hoặc đăng ký">
+          <button
+            type="button"
+            class="auth-mode-btn is-active"
+            id="authTabLogin"
+            data-auth-mode="login"
+            role="tab"
+            aria-selected="true"
+          >
+            ĐĂNG NHẬP
+          </button>
+          <button
+            type="button"
+            class="auth-mode-btn"
+            id="authTabRegister"
+            data-auth-mode="register"
+            role="tab"
+            aria-selected="false"
+          >
+            ĐĂNG KÝ
+          </button>
+        </div>
+
+        <form class="auth-form" id="authForm" novalidate>
+          <div class="auth-field" id="authNameGroup" hidden>
+            <label class="control-label" for="authFullName">HỌ VÀ TÊN</label>
+            <input
+              type="text"
+              id="authFullName"
+              class="luxury-input"
+              placeholder="Ví dụ: Nguyễn Minh Anh"
+              autocomplete="name"
+            >
+          </div>
+
+          <div class="auth-field">
+            <label class="control-label" for="authEmail">EMAIL ĐĂNG NHẬP</label>
+            <input
+              type="email"
+              id="authEmail"
+              class="luxury-input"
+              placeholder="tenban@auraskin.vn"
+              autocomplete="email"
+              required
+            >
+          </div>
+
+          <div class="auth-field">
+            <label class="control-label" for="authPassword">MẬT KHẨU</label>
+            <div class="password-input-wrap">
+              <input
+                type="password"
+                id="authPassword"
+                class="luxury-input has-toggle"
+                placeholder="Nhập tối thiểu 6 ký tự"
+                autocomplete="current-password"
+                required
+              >
+              <button
+                type="button"
+                class="btn-toggle-password"
+                id="togglePasswordBtn"
+                aria-label="Hiện hoặc ẩn mật khẩu"
+              >
+                HIỆN
+              </button>
+            </div>
+          </div>
+
+          <div class="auth-field" id="authConfirmGroup" hidden>
+            <label class="control-label" for="authConfirmPassword">XÁC NHẬN MẬT KHẨU</label>
+            <input
+              type="password"
+              id="authConfirmPassword"
+              class="luxury-input"
+              placeholder="Nhập lại mật khẩu"
+              autocomplete="new-password"
+            >
+          </div>
+
+          <p class="upload-error" id="authError" role="alert" hidden></p>
+
+          <button type="submit" class="btn-analyze" id="authSubmitBtn">
+            ĐĂNG NHẬP HỆ THỐNG
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <div class="app-shell" id="appShell" hidden>
+    <!-- =========================================================
+         LEFT SIDEBAR: Brand Header, Uploader, Context & CTA
+         ========================================================= -->
+    <aside class="sidebar" aria-label="Bảng điều khiển phân tích làn da">
+      <header class="brand-header">
+        <div class="brand-user-bar">
+          <span class="brand-user-label" id="activeUserLabel">Khách</span>
+          <button type="button" class="btn-logout" id="logoutBtn">ĐĂNG XUẤT</button>
+        </div>
+        <h1 class="brand-wordmark">AURASKIN</h1>
+        <p class="brand-subtitle">CHẨN ĐOÁN &amp; TƯ VẤN ĐIỀU TRỊ MỤN</p>
+        <p class="brand-tagline">Thấu hiểu làn da theo cách dịu dàng nhất</p>
+      </header>
+
+      <!-- 01. Image Uploader -->
+      <section class="sidebar-section" aria-labelledby="uploadSectionHeading">
+        <div class="section-label-row">
+          <span class="section-index">01</span>
+          <h2 class="section-heading" id="uploadSectionHeading">TẢI ẢNH LÀN DA</h2>
+        </div>
+
+        <div
+          class="upload-zone"
+          id="uploadZone"
+          role="button"
+          tabindex="0"
+          aria-label="Kéo thả hoặc chọn ảnh khuôn mặt định dạng JPG, JPEG, PNG"
+        >
+          <input
+            type="file"
+            id="imageInput"
+            accept=".jpg,.jpeg,.png,image/jpeg,image/png"
+            hidden
+          >
+
+          <!-- Empty Upload State -->
+          <div class="upload-prompt" id="uploadPrompt">
+            <span class="upload-numeral">01</span>
+            <p class="upload-title">CHỌN HOẶC KÉO THẢ ẢNH</p>
+            <p class="upload-hint">Chấp nhận tệp .JPG, .JPEG, .PNG</p>
+          </div>
+
+          <!-- Uploaded File Metadata State -->
+          <div class="upload-meta" id="uploadMeta" hidden>
+            <span class="meta-badge">ĐÃ THÊM TỆP HÌNH ẢNH</span>
+            <button type="button" class="btn-change-image" id="changeImageBtn">
+              THAY ĐỔI ẢNH
+            </button>
+          </div>
+        </div>
+
+        <p class="upload-error" id="uploadError" role="alert" hidden></p>
+      </section>
+
+      <!-- 02. User Skin Context Controls -->
+      <section class="sidebar-section" aria-labelledby="contextSectionHeading">
+        <div class="section-label-row">
+          <span class="section-index">02</span>
+          <h2 class="section-heading" id="contextSectionHeading">TÌNH TRẠNG DA</h2>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label" for="skinTypeSelect">
+            LOẠI DA
+          </label>
+          <div class="select-wrapper">
+            <select id="skinTypeSelect" class="luxury-select">
+              <option value="Chưa xác định">Chưa xác định</option>
+              <option value="Da khô">Da khô</option>
+              <option value="Da dầu">Da dầu</option>
+              <option value="Da hỗn hợp">Da hỗn hợp</option>
+              <option value="Da nhạy cảm">Da nhạy cảm</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <span class="control-label" id="concernsGroupLabel">
+            MỐI QUAN TÂM ƯU TIÊN
+          </span>
+          <div
+            class="concern-pills"
+            id="concernPills"
+            role="group"
+            aria-labelledby="concernsGroupLabel"
+          >
+            <button type="button" class="pill-btn" data-concern="Mụn" aria-pressed="false">
+              Mụn
+            </button>
+            <button type="button" class="pill-btn" data-concern="Thâm sạm" aria-pressed="false">
+              Thâm sạm
+            </button>
+            <button type="button" class="pill-btn" data-concern="Thâm mụn" aria-pressed="false">
+              Thâm mụn
+            </button>
+            <button type="button" class="pill-btn" data-concern="Mụn đầu đen" aria-pressed="false">
+              Mụn đầu đen
+            </button>
+            <button type="button" class="pill-btn" data-concern="Mẩn đỏ" aria-pressed="false">
+              Mẩn đỏ
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 03. Primary Action CTA -->
+      <div class="sidebar-footer">
+        <button type="button" id="analyzeBtn" class="btn-analyze" disabled>
+          BẮT ĐẦU PHÂN TÍCH
+        </button>
+        <p class="analyze-caption" id="analyzeCaption">
+          Vui lòng tải lên hình ảnh làn da để kích hoạt quy trình phân tích.
+        </p>
+      </div>
+    </aside>
+
+    <!-- =========================================================
+         MAIN WORKSPACE: Comparison Frame & 4 Functional Tabs
+         ========================================================= -->
+    <main class="workspace">
+      <!-- Top Section: Image Comparison Frame -->
+      <section class="comparison-section" aria-labelledby="workspaceTopHeading">
+        <div class="workspace-header">
+          <div>
+            <p class="eyebrow">KHUNG QUAN SÁT LÂM SÀNG</p>
+            <h2 class="workspace-title" id="workspaceTopHeading">
+              Đối chiếu Bề mặt &amp; Điểm Trọng tâm
+            </h2>
+          </div>
+          <span class="status-pill" id="workspaceStatusPill">CHƯA NẠP ẢNH</span>
+        </div>
+
+        <!-- Initial Blank State: 3-Column Onboarding Guide Card -->
+        <div class="onboarding-card" id="onboardingGuide">
+          <div class="onboarding-intro">
+            <h3 class="onboarding-heading">
+              Tiêu chuẩn khung hình tư vấn
+            </h3>
+            <p class="onboarding-subtext">
+              Để hệ thống định vị bề mặt và gợi ý phác đồ phù hợp nhất, hình ảnh đầu vào nên đáp ứng ba nguyên tắc chuẩn mực dưới đây.
+            </p>
+          </div>
+
+          <div class="onboarding-grid">
+            <article class="guide-column">
+              <span class="guide-index">01. ÁNH SÁNG TỰ NHIÊN</span>
+              <h4 class="guide-title">Nguồn sáng tán xạ dịu</h4>
+              <p class="guide-desc">
+                Ưu tiên chụp cạnh cửa sổ vào ban ngày, tránh ánh đèn vàng gắt hoặc đèn flash trực diện gây lóa bề mặt da.
+              </p>
+            </article>
+
+            <article class="guide-column">
+              <span class="guide-index">02. BỀ MẶT DA MỘC</span>
+              <h4 class="guide-title">Không lớp phủ che khuyết điểm</h4>
+              <p class="guide-desc">
+                Làm sạch lớp trang điểm, kem chống nắng nâng tông và tắt hoàn toàn các bộ lọc làm mịn ảnh trên thiết bị.
+              </p>
+            </article>
+
+            <article class="guide-column">
+              <span class="guide-index">03. GÓC CHỤP CHÍNH DIỆN</span>
+              <h4 class="guide-title">Cân đối trục khuôn mặt</h4>
+              <p class="guide-desc">
+                Giữ máy ảnh ngang tầm mắt ở khoảng cách 30 đến 40 cm, lấy trọn vùng trán, hai bên má và viền hàm rõ nét.
+              </p>
+            </article>
+          </div>
+        </div>
+
+        <!-- Active State: 2-Column Image Comparison Grid -->
+        <div class="comparison-grid" id="comparisonGrid" hidden>
+          <article class="frame-card">
+            <header class="frame-header">
+              <span class="frame-tag">01 / ẢNH GỐC</span>
+              <span class="frame-meta" id="originalFrameMeta">NGUYÊN BẢN</span>
+            </header>
+            <div class="frame-stage">
+              <img id="originalPreview" alt="Ảnh làn da gốc do người dùng tải lên">
+            </div>
+          </article>
+
+          <article class="frame-card">
+            <header class="frame-header">
+              <span class="frame-tag">02 / ẢNH SAU KHI QUÉT</span>
+              <span class="frame-meta" id="scannedFrameMeta">CHỜ LỆNH</span>
+            </header>
+            <div class="frame-stage canvas-stage" id="canvasStage">
+              <canvas id="scannedCanvas"></canvas>
+
+              <!-- Scanning Beam Overlay (1.2s animation) -->
+              <div class="scan-overlay" id="scanOverlay" aria-hidden="true">
+                <div class="scan-beam"></div>
+                <div class="scan-line"></div>
+                <span class="scan-status-tag">ĐANG QUÉT CẤU TRÚC BỀ MẶT</span>
+              </div>
+
+              <!-- Waiting State Overlay before Analyze is clicked -->
+              <div class="waiting-overlay" id="waitingOverlay">
+                <p class="waiting-label">ĐANG CHỜ LỆNH PHÂN TÍCH</p>
+                <p class="waiting-sublabel">
+                  Nhấn Bắt đầu phân tích ở thanh công cụ bên trái
+                </p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Bottom Section: 4 Functional Tabs -->
+      <section class="tabs-section" aria-label="Bảng dữ liệu tư vấn chi tiết">
+        <nav class="tabs-nav" role="tablist" aria-label="Chuyển đổi nội dung tư vấn">
+          <button
+            type="button"
+            class="tab-btn is-active"
+            role="tab"
+            aria-selected="true"
+            aria-controls="panel-analysis"
+            id="tab-analysis"
+            data-tab="analysis"
+          >
+            Phân tích
+          </button>
+          <button
+            type="button"
+            class="tab-btn"
+            role="tab"
+            aria-selected="false"
+            aria-controls="panel-routine"
+            id="tab-routine"
+            data-tab="routine"
+          >
+            Quy trình dưỡng da
+          </button>
+          <button
+            type="button"
+            class="tab-btn"
+            role="tab"
+            aria-selected="false"
+            aria-controls="panel-products"
+            id="tab-products"
+            data-tab="products"
+          >
+            Gợi ý sản phẩm
+          </button>
+          <button
+            type="button"
+            class="tab-btn"
+            role="tab"
+            aria-selected="false"
+            aria-controls="panel-history"
+            id="tab-history"
+            data-tab="history"
+          >
+            Lịch sử
+          </button>
+        </nav>
+
+        <div class="tabs-content">
+          <div
+            class="tab-panel is-active"
+            id="panel-analysis"
+            role="tabpanel"
+            aria-labelledby="tab-analysis"
+          ></div>
+
+          <div
+            class="tab-panel"
+            id="panel-routine"
+            role="tabpanel"
+            aria-labelledby="tab-routine"
+            hidden
+          ></div>
+
+          <div
+            class="tab-panel"
+            id="panel-products"
+            role="tabpanel"
+            aria-labelledby="tab-products"
+            hidden
+          ></div>
+
+          <div
+            class="tab-panel"
+            id="panel-history"
+            role="tabpanel"
+            aria-labelledby="tab-history"
+            hidden
+          ></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="app.js" defer></script>
+</body>
+</html>

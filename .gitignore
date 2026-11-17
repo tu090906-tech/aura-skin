@@ -1,0 +1,52 @@
+# ====================================================================
+# AURASKIN .gitignore
+# ====================================================================
+
+# 1. BẢO MẬT API KEY & THÔNG TIN MẬT (TUYỆT ĐỐI KHÔNG ĐƯA LÊN GITHUB)
+.env
+.env.*
+!.env.example
+
+# 2. CƠ SỞ DỮ LIỆU & TÀI KHOẢN NGƯỜI DÙNG (CHỨA MẬT KHẨU & DỮ LIỆU THỰC TẾ)
+auraskin.db
+*.db
+*.sqlite
+*.sqlite3
+users.json
+
+# 3. HÌNH ẢNH CỦA NGƯỜI DÙNG TẢI LÊN (QUYỀN RIÊNG TƯ KHUÔN MẶT)
+uploads/*
+!uploads/.gitkeep
+
+# 4. MÔI TRƯỜNG ẢO PYTHON (RẤT NẶNG, KHÔNG ĐƯA LÊN GIT)
+.venv/
+venv/
+env/
+ENV/
+
+# 5. CACHE & BYTECODE BIÊN DỊCH CỦA PYTHON
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+
+# 6. CÁC FILE CẤU HÌNH IDE & HỆ ĐIỀU HÀNH
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 7. TÀI LIỆU CÁ NHÂN & FILE NÉN
+*.docx
+*.zip
+*.rar
+*.7z
+
+# 8. SCRIPT KHỞI CHẠY CỤC BỘ & TEST (KHÔNG ĐƯA LÊN GIT / CLOUD)
+run.bat
+start.bat
+*.bat
+*.cmd
+*.ps1
+test_*.py
